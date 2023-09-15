@@ -22,13 +22,6 @@ export default function Page() {
     return { success: true };
   }
 
-  async function log() {
-    "use server";
-    const path = ("./tmp/Friend! Hello friend!.mp3")
-    console.log(`open ${path} to see the uploaded file`);
-  }
-
-
   return (
     <main>
       <h1>React Server Component: Upload</h1>
@@ -36,9 +29,7 @@ export default function Page() {
         <input type="file" accept=".mp3" name="file" />
         <input type="submit" value="Upload" />
       </form>
-
-
-      <h1>React Server Component: TEST</h1>
+      <h1>React Server Component: Play</h1>
       <div>
         <h1>Audio Player</h1>
         <audio controls>
@@ -46,10 +37,6 @@ export default function Page() {
           Your browser does not support the audio element.
         </audio>
       </div>
-
-
-
-
     </main>
   );
 }
