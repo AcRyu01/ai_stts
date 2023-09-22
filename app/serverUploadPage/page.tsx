@@ -35,8 +35,8 @@ export default function Page() {
       <div>
         <h1>Audio Player</h1>
         <audio controls>
-          <source src="/audio/Friend! Hello friend!.mp3" type="audio/mpeg" />
-          Your browser does not support the audio element.
+          <source src="/audio/6.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
         </audio>
       </div>
     </main>
