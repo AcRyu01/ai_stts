@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 
 export default function Home() {
-  const [currentLanguage, setCurrentLanguage] = useState("th"); // Default language
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [currentLanguage, setCurrentLanguage] = useState("th-TH"); // Default language
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isComplete, setIsComplete] = useState<boolean>(false);
 
   const handleFileChange = (event: any) => {
     // Get the selected file from the input field
@@ -14,16 +15,15 @@ export default function Home() {
 
   const handleLanguageSwap = () => {
     // Function to toggle between Thai ("th") and English ("en")
-    setCurrentLanguage(currentLanguage === "th" ? "en" : "th");
+    setCurrentLanguage(currentLanguage === "th-TH" ? "en-US" : "th-TH");
   };
 
   const handleFileUpload = async () => {
     if (selectedFile) {
-      // Now you can use the selectedFile for your file upload logic
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
+      // upload file
       try {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
         const response = await fetch("/api/upload", {
           method: "POST",
           body: formData,
@@ -38,6 +38,27 @@ export default function Home() {
         }
       } catch (error) {
         console.error("An error occurred while uploading the file:", error);
+      }
+      // sttts
+      try {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        formData.append("lang", currentLanguage);
+        const response = await fetch("/api/sttts", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsComplete(!isComplete);
+          console.log("STTTS successfully");
+        } else {
+          const errorData = await response.json();
+          console.error("STTTS failed. Error:", errorData.error);
+        }
+      } catch (error) {
+        console.error("An error occurred while sttts the file:", error);
       }
     } else {
       console.error("No file selected.");
@@ -96,11 +117,18 @@ export default function Home() {
           </form>
         </div>
         <div className="w-[538px] h-[1101px] bg-orange-50 rounded-[50px] mt-[49px] ml-[52px] pt-[27px]">
-          <div className="w-[50px] h-[50px] bg-orange-500 rounded-[50px] ml-[45px]">
-            <audio controls>
-              <source src="/audio/6.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
+          <div
+            className={`${
+              isComplete ? "p-2 w-fit transition" : "w-[50px] h-[50px]"
+            } bg-orange-500 rounded-[50px] ml-[45px]`}
+          >
+            {isComplete && (
+              <audio controls>
+                <source src={`/audio/output.mp3`} type="audio/mpeg" />
+                {/* <source src={`/audio/${selectedFile?.name}`} type="audio/mpeg" /> */}
+                Your browser does not support the audio element.
+              </audio>
+            )}
           </div>
           <p className="ml-[70px] mt-[61px]"> eieieieiieieieieieieieiie </p>
         </div>

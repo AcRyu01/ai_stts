@@ -5,6 +5,7 @@ export async function POST(request: NextRequest) {
   const data = await request.formData();
   const file: File | null = data.get("file") as unknown as File;
 
+  // ________________ WRITE FILE SECTION ________________
   if (!file) {
     return NextResponse.json({ success: false });
   }
@@ -14,7 +15,8 @@ export async function POST(request: NextRequest) {
 
   // With the file data in the buffer, you can do whatever you want with it.
   // For this, we'll just write it to the filesystem in a new location
-  const path = `./tmp/${file.name}`;
+  const path = `./public/audio/${file.name}`;
+  // const path = `./tmp/${file.name}`;
   await writeFile(path, buffer);
   console.log(`open ${path} to see the uploaded file`);
 
