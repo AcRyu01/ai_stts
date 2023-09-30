@@ -2,10 +2,24 @@
 "use client";
 import React, { useState } from "react";
 
+interface IText {
+  inputText: string;
+  translatedText: string;
+}
+interface ISTTTSRes {
+  success: boolean;
+  inText: string;
+  outText: string;
+}
+
 export default function Home() {
   const [currentLanguage, setCurrentLanguage] = useState("th-TH"); // Default language
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isComplete, setIsComplete] = useState<boolean>(false);
+  const [text, setText] = useState<IText>({
+    inputText: "",
+    translatedText: "",
+  });
 
   const handleFileChange = (event: any) => {
     // Get the selected file from the input field
@@ -50,8 +64,13 @@ export default function Home() {
         });
 
         if (response.ok) {
-          const data = await response.json();
+          const data: ISTTTSRes = await response.json();
+          console.log(data.success);
           setIsComplete(!isComplete);
+          setText({
+            inputText: data.inText,
+            translatedText: data.outText,
+          });
           console.log("STTTS successfully");
         } else {
           const errorData = await response.json();
@@ -67,56 +86,70 @@ export default function Home() {
 
   return (
     <>
-      <div className="w-auto h-[100px] bg-orange-400 shadow flex">
-        <p className="w-[247px] h-[59px] text-black text-[64px] font-normal font-['Sofia Sans'] ml-[40px]">
+      {/* Header */}
+      <div className="w-auto h-[100px] bg-orange-400 shadow flex items-center">
+        <p className="text-black text-[64px] font-normal font-['Sofia Sans'] ml-10">
           STTTS
         </p>
-        <p className="w-[433px] h-[115px] text-black text-[40px] font-normal font-['Sofia Sans'] mx-auto mt-[23px]">
+        <p className=" text-black text-[40px] font-normal font-['Sofia Sans'] mx-auto">
           make your life ez
         </p>
       </div>
-
+      {/* lang section */}
       <div className="flex justify-center gap-[87px] mt-[81px]">
-        <div className="w-[220px] h-[70px] bg-white rounded-[50px] border-2 border-orange-500">
-          <p className="w-[78.32px] h-[34.12px] text-center text-orange-500 text-[40px] font-bold font-['Sofia Sans'] ml-[71px]">
-            {currentLanguage === "th" ? "ไทย" : "English"}
-          </p>
+        <div className="text-orange-500 rounded-[50px] text-center border-2 border-orange-500 text-[40px] font-bold font-['Sofia Sans'] px-10 w-[220px] h-fit">
+          {currentLanguage === "th-TH" ? "ไทย" : "English"}
         </div>
+        {/* <div className=" bg-white rounded-[50px] border-2 border-orange-500">
+          <p className=" text-center text-orange-500 text-[40px] font-bold font-['Sofia Sans'] ml-[71px]">
+            {currentLanguage === "th-TH" ? "ไทย" : "English"}
+          </p>
+        </div> */}
         <div className="flex justify-center gap-[87px] mt-[81px]">
-          <div
+          <button
+            className="text-orange-500 hover:text-white hover:bg-orange-500 rounded-[50px] text-center border-2 border-orange-500 text-[40px] font-bold font-['Sofia Sans'] px-10 w-[220px] h-fit"
+            onClick={handleLanguageSwap}
+          >
+            SWAP
+          </button>
+          {/* <div
             className="w-[220px] h-[70px] bg-white rounded-[50px] border-2 border-orange-500 cursor-pointer"
             onClick={handleLanguageSwap}
           ></div>
-          <div>eiei</div>
+          <div>eiei</div> */}
         </div>
-        <div className="w-[220px] h-[70px] bg-white rounded-[50px] border-2 border-orange-500">
+        <div className="text-orange-500 rounded-[50px] text-center border-2 border-orange-500 text-[40px] font-bold font-['Sofia Sans'] px-10 w-[220px] h-fit">
+          {currentLanguage === "th-TH" ? "English" : "ไทย"}
+        </div>
+        {/* <div className="w-[220px] h-[70px] bg-white rounded-[50px] border-2 border-orange-500">
           <p className="w-[78.32px] h-[34.12px] text-center text-orange-500 text-[40px] font-bold font-['Sofia Sans'] ml-[40px]">
-            {currentLanguage === "th" ? "English" : "ไทย"}
+            {currentLanguage === "th-TH" ? "English" : "ไทย"}
           </p>
-        </div>
+        </div> */}
       </div>
-
+      {/* content section */}
       <div className="flex">
-        <div className="w-[538px] h-[625px] bg-orange-50 rounded-[50px] ml-[148px] mt-[49px] pt-[28px]">
+        <div className="w-[538px] h-[50vh] bg-orange-50 p-4 rounded-[50px] ml-[148px] mt-[49px] pt-[28px]">
           <form action={handleFileUpload}>
-            <div className="w-[170px] h-10 bg-orange-500 rounded-[50px] py-[8px] ml-[41px] hover:cursor-pointer">
+            <div className="w-[170px] h-10 bg-orange-500 text-white hover:text-orange-500 hover:bg-white border-2 border-orange-500 rounded-[50px] py-[8px] ml-[41px] hover:cursor-pointer">
               <input
                 type="submit"
                 value="Upload files"
-                className="ml-[25px]  text-white text-xl font-bold font-['Sofia Sans'] hover:cursor-pointer"
+                className="ml-[25px] text-xl font-bold font-['Sofia Sans'] hover:cursor-pointer"
               />
             </div>
-            <div className="mt-[300px] mx-[195px]">
+            <div className="mt-32 flex flex-col items-center gap-10">
               <input
                 type="file"
                 accept=".mp3"
                 name="file"
                 onChange={handleFileChange}
               />
+              {isComplete && text.inputText !== "" && <p>{text.inputText}</p>}
             </div>
           </form>
         </div>
-        <div className="w-[538px] h-[1101px] bg-orange-50 rounded-[50px] mt-[49px] ml-[52px] pt-[27px]">
+        <div className="w-[538px] h-[50vh] bg-orange-50 p-4 rounded-[50px] mt-[49px] ml-[52px] pt-[27px]">
           <div
             className={`${
               isComplete ? "p-2 w-fit transition" : "w-[50px] h-[50px]"
@@ -130,7 +163,9 @@ export default function Home() {
               </audio>
             )}
           </div>
-          <p className="ml-[70px] mt-[61px]"> eieieieiieieieieieieieiie </p>
+          {isComplete && text.translatedText !== "" && (
+            <p className="ml-[70px] mt-[61px]">{text.translatedText}</p>
+          )}
         </div>
       </div>
     </>
