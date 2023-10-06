@@ -84,6 +84,38 @@ export default function Home() {
     }
   };
 
+  const handleDownload = async () => {
+    try {
+      // Send a request to the server to download the file
+      const response = await fetch(`/api/download`, {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        // Create a Blob from the response data
+        const blob = await response.blob();
+
+        // Create a temporary URL for the Blob
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a link element to trigger the download
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "output.mp3";
+
+        // Trigger a click event to start the download
+        link.click();
+
+        // Clean up the temporary URL
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error("File download failed.");
+      }
+    } catch (error) {
+      console.error("An error occurred while downloading the file:", error);
+    }
+  };
+
   return (
     <>
       {/* Header */}
@@ -166,6 +198,15 @@ export default function Home() {
           {isComplete && text.translatedText !== "" && (
             <p className="ml-[70px] mt-[61px]">{text.translatedText}</p>
           )}
+        </div>
+
+        <div>
+          <button
+            className="bg-orange-500 text-white px-4 py-2 rounded-full mt-4 hover:cursor-pointer"
+            onClick={handleDownload}
+          >
+            Download MP3
+          </button>
         </div>
       </div>
     </>
