@@ -11,16 +11,26 @@ interface ISTTTSRes {
   inText: string;
   outText: string;
 }
+enum ECompleteStage {
+  wait,
+  process,
+  complete,
+  fileInvalid,
+}
 
 export default function Home() {
   const [currentLanguage, setCurrentLanguage] = useState("th-TH"); // Default language
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isComplete, setIsComplete] = useState<boolean>(false);
+  const [isComplete, setIsComplete] = useState<ECompleteStage>(
+    ECompleteStage.wait
+  );
   const [text, setText] = useState<IText>({
     inputText: "",
     translatedText: "",
   });
-
+  const copy = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
   const handleFileChange = (event: any) => {
     // Get the selected file from the input field
     const file = event.target.files[0];
@@ -36,6 +46,11 @@ export default function Home() {
     if (selectedFile) {
       // upload file
       try {
+        // if (selectedFile.type !== "audio/mpeg") {
+        //   setIsComplete(ECompleteStage.fileInvalid);
+        //   return;
+        // }
+        // alert("hehe");
         const formData = new FormData();
         formData.append("file", selectedFile);
         const response = await fetch("/api/upload", {
@@ -66,7 +81,7 @@ export default function Home() {
         if (response.ok) {
           const data: ISTTTSRes = await response.json();
           console.log(data.success);
-          setIsComplete(!isComplete);
+          setIsComplete(ECompleteStage.complete);
           setText({
             inputText: data.inText,
             translatedText: data.outText,
@@ -118,6 +133,12 @@ export default function Home() {
 
   return (
     <>
+      {/* filter */}
+      {isComplete === ECompleteStage.process && (
+        <div className="w-full h-full absolute bg-black opacity-70 flex justify-center items-center">
+          <h1 className="text-white text-9xl animate-pulse">Loading</h1>
+        </div>
+      )}
       {/* Header */}
       <div className="w-auto h-[100px] bg-orange-400 shadow flex items-center">
         <p className="text-black text-[64px] font-normal font-['Sofia Sans'] ml-10">
@@ -162,7 +183,12 @@ export default function Home() {
       {/* content section */}
       <div className="flex">
         <div className="w-[538px] h-[50vh] bg-orange-50 p-4 rounded-[50px] ml-[148px] mt-[49px] pt-[28px]">
-          <form action={handleFileUpload}>
+          <form
+            action={() => {
+              handleFileUpload();
+              setIsComplete(ECompleteStage.process);
+            }}
+          >
             <div className="w-[170px] h-10 bg-orange-500 text-white hover:text-orange-500 hover:bg-white border-2 border-orange-500 rounded-[50px] py-[8px] ml-[41px] hover:cursor-pointer">
               <input
                 type="submit"
@@ -177,17 +203,30 @@ export default function Home() {
                 name="file"
                 onChange={handleFileChange}
               />
-              {isComplete && text.inputText !== "" && <p>{text.inputText}</p>}
+              {isComplete === ECompleteStage.complete &&
+                text.inputText !== "" && (
+                  <>
+                    <p>{text.inputText}</p>
+                    <p
+                      onClick={() => copy(text.inputText)}
+                      className="mt-10 w-full text-right pr-4 hover:text-red-500 hover:cursor-pointer"
+                    >
+                      copy
+                    </p>
+                  </>
+                )}
             </div>
           </form>
         </div>
         <div className="w-[538px] h-[50vh] bg-orange-50 p-4 rounded-[50px] mt-[49px] ml-[52px] pt-[27px]">
           <div
             className={`${
-              isComplete ? "p-2 w-fit transition" : "w-[50px] h-[50px]"
+              isComplete === ECompleteStage.complete
+                ? "p-2 w-fit transition"
+                : "w-[50px] h-[50px]"
             } bg-orange-500 rounded-[50px] ml-[45px]`}
           >
-            {isComplete && (
+            {isComplete === ECompleteStage.complete && (
               <audio controls>
                 <source src={`/audio/output.mp3`} type="audio/mpeg" />
                 {/* <source src={`/audio/${selectedFile?.name}`} type="audio/mpeg" /> */}
@@ -195,9 +234,18 @@ export default function Home() {
               </audio>
             )}
           </div>
-          {isComplete && text.translatedText !== "" && (
-            <p className="ml-[70px] mt-[61px]">{text.translatedText}</p>
-          )}
+          {isComplete === ECompleteStage.complete &&
+            text.translatedText !== "" && (
+              <>
+                <p className="ml-[70px] mt-[61px]">{text.translatedText}</p>
+                <p
+                  onClick={() => copy(text.translatedText)}
+                  className="mt-10 w-full text-right pr-4 hover:text-red-500 hover:cursor-pointer"
+                >
+                  copy
+                </p>
+              </>
+            )}
         </div>
 
         <div>
