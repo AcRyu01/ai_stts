@@ -8,6 +8,9 @@ import dup from "../app/pic/document-duplicate.png";
 import dowload from "../app/pic/download.png";
 import up from "../app/pic/up.png";
 import dow from "../app/pic/dow.png";
+import PopUp1 from "./popUp1";
+import PopUp2 from "./popUp2";
+import PopUp3 from "./popUp3";
 
 export default function Home() {
   return (
@@ -111,6 +114,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <PopUp3></PopUp3>
       </div>
     </>
   );
