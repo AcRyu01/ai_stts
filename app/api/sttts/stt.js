@@ -13,7 +13,7 @@ export const stt = (filename, lang) => {
     async function quickstart() {
       const filePath = "./public/audio/" + filename;
       const encoding = "MP3";
-      const sampleRateHertz = 16000;
+      const sampleRateHertz = 48000;
       const languageCode = lang;
 
       const config = {

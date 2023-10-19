@@ -22,7 +22,7 @@ export const tts = (lang) => {
         const request = {
           input: { text: text },
           // Select the language and SSML voice gender (optional)
-          voice: { languageCode: lang, ssmlGender: "NEUTRAL" },
+          voice: { languageCode: lang, ssmlGender: "FEMALE" },
           // Select the type of audio encoding
           audioConfig: { audioEncoding: "MP3" },
         };
