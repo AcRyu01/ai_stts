@@ -28,10 +28,10 @@ const PopUp1 = ({ className, clicked }: IPopUp1) => {
           Oops!
         </p>
         <p className="text-[26px]  font-bold font-['Sofia Sans'] ml-[40px]">
-          Your file format isn't compatible.
+          Your file format isn&apos;t compatible.
         </p>
         <p className="text-[26px]  font-bold font-['Sofia Sans'] ml-[111px]">
-          Make sure it's .mp3.
+          Make sure it&apos;s .mp3.
         </p>
       </div>
     </div>
