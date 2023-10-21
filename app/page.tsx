@@ -179,7 +179,7 @@ export default function Home() {
       {/*content*/}
 
       {/*langeuage and Switch button*/}
-      <div className="flex mt-[69px]">
+      <div className="flex mt-[69px] mb-8">
         <div className="flex gap-x-[60px] text-[32px] font-semibold font-['Sofia Sans'] text-zinc-600 ml-[151px]">
           <p
             className={`${
@@ -220,7 +220,7 @@ export default function Home() {
       {/*box box*/}
       <div className="flex  gap-x-[36px] justify-center">
         {/*gray box*/}
-        <div className="w-[633px] h-[625px] p-10 bg-neutral-200 bg-opacity-90 rounded-[20px] flex flex-col justify-between ">
+        <div className="w-[633px] min-h-[500px] p-10 bg-neutral-200 bg-opacity-90 rounded-[20px] flex flex-col justify-between ">
           <form
             action={() => {
               handleFileUpload();
@@ -275,7 +275,7 @@ export default function Home() {
         </div>
 
         {/*orange box*/}
-        <div className="w-[633px] h-[625px] p-10 bg-orange-50 rounded-[20px] flex flex-col justify-between">
+        <div className="w-[633px] min-h-[500px] p-10 bg-orange-50 rounded-[20px] flex flex-col justify-between">
           {isComplete === ECompleteStage.complete && (
             <audio controls>
               <source src={`/audio/output.mp3`} type="audio/mpeg" />
@@ -325,7 +325,7 @@ export default function Home() {
       </div>
 
       {/*footer*/}
-      <div className="w-auto h-[535px] bg-orange-400 bg-opacity-60 mt-[731px] pt-[88px]">
+      <div className="w-auto h-[535px] bg-orange-400 bg-opacity-60 mt-40 pt-[88px]">
         <div className="ml-[174px]">
           <div className="flex">
             <Image src={Upload} alt="upload"></Image>
@@ -365,10 +365,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-          {isComplete === ECompleteStage.complete &&
-            text.translatedText !== "" && (
-              <p className="ml-[70px] mt-[61px]">{text.translatedText}</p>
-            )}
         </div>
       </div>
     </>
