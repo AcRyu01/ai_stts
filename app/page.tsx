@@ -250,11 +250,11 @@ export default function Home() {
               <p>no file choose</p>
             </div> */}
             <div className="flex justify-end items-center gap-8">
-              <div className="w-[170px] h-10 bg-orange-500 text-white hover:text-orange-500 hover:bg-white border-2 border-orange-500 rounded-[50px] py-[8px] hover:cursor-pointer">
+              <div className="w-[170px] h-10 flex justify-center items-center bg-orange-500 text-white hover:text-orange-500 hover:bg-white border-2 border-orange-500 rounded-[50px] py-[8px] hover:cursor-pointer">
                 <input
                   type="submit"
-                  value="Upload files"
-                  className="ml-[25px] text-xl font-bold font-['Sofia Sans'] hover:cursor-pointer"
+                  value="Upload File"
+                  className=" text-xl font-bold font-['Sofia Sans'] hover:cursor-pointer"
                 />
               </div>
               <span
