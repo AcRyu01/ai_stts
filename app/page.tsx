@@ -186,7 +186,7 @@ export default function Home() {
               currentLanguage === "th-TH" && " text-orange-500 underline"
             }`}
           >
-            thai
+            Thai
           </p>
           <p
             className={`${
@@ -205,7 +205,7 @@ export default function Home() {
               currentLanguage === "en-US" && "text-orange-500 underline"
             }`}
           >
-            thai
+            Thai
           </p>
           <p
             className={`${
@@ -220,24 +220,18 @@ export default function Home() {
       {/*box box*/}
       <div className="flex  gap-x-[36px] justify-center">
         {/*gray box*/}
-        <div className="w-[633px] min-h-[500px] p-10 bg-neutral-200 bg-opacity-90 rounded-[20px] flex flex-col justify-between ">
+        <div className="w-[633px] min-h-[250px] p-10 bg-neutral-200 bg-opacity-90 rounded-[20px]">
           <form
             action={() => {
               handleFileUpload();
               // setIsComplete(ECompleteStage.process);
             }}
+            className="h-full flex flex-col justify-between gap-4"
           >
-            <div className="w-[170px] h-10 bg-orange-500 text-white hover:text-orange-500 hover:bg-white border-2 border-orange-500 rounded-[50px] py-[8px] ml-[41px] hover:cursor-pointer">
-              <input
-                type="submit"
-                value="Upload files"
-                className="ml-[25px] text-xl font-bold font-['Sofia Sans'] hover:cursor-pointer"
-              />
-            </div>
-            <div className="mt-32 flex flex-col items-center gap-10">
+            <div className="flex flex-col gap-10">
               <input
                 type="file"
-                // accept=".mp3"
+                accept=".mp3"
                 name="file"
                 onChange={handleFileChange}
               />
@@ -248,34 +242,37 @@ export default function Home() {
                   </>
                 )}
             </div>
-          </form>
-
-          <div
-            className={`w-full text-center text-[#7A7A7A] ${
-              isComplete !== ECompleteStage.wait && "hidden"
-            }`}
-          >
-            {isComplete === ECompleteStage.complete &&
-            text.translatedText !== "" ? (
-              <p>{text.translatedText}</p>
-            ) : (
+            {/* <div
+              className={`w-full text-center text-[#7A7A7A] ${
+                isComplete !== ECompleteStage.wait && "hidden"
+              }`}
+            >
               <p>no file choose</p>
-            )}
-          </div>
-          <button
-            className={`self-end opacity-50 cursor-default ${
-              isComplete === ECompleteStage.complete &&
-              text.inputText !== "" &&
-              "opacity-100 hover:cursor-pointer"
-            }`}
-            onClick={() => copy(text.inputText)}
-          >
-            <Image src={dup} alt="dup"></Image>
-          </button>
+            </div> */}
+            <div className="flex justify-end items-center gap-8">
+              <div className="w-[170px] h-10 bg-orange-500 text-white hover:text-orange-500 hover:bg-white border-2 border-orange-500 rounded-[50px] py-[8px] hover:cursor-pointer">
+                <input
+                  type="submit"
+                  value="Upload files"
+                  className="ml-[25px] text-xl font-bold font-['Sofia Sans'] hover:cursor-pointer"
+                />
+              </div>
+              <span
+                className={`self-end opacity-50 cursor-default ${
+                  isComplete === ECompleteStage.complete &&
+                  text.inputText !== "" &&
+                  "opacity-100 hover:cursor-pointer hover:animate-bounce"
+                }`}
+                onClick={() => copy(text.inputText)}
+              >
+                <Image src={dup} alt="dup"></Image>
+              </span>
+            </div>
+          </form>
         </div>
 
         {/*orange box*/}
-        <div className="w-[633px] min-h-[500px] p-10 bg-orange-50 rounded-[20px] flex flex-col justify-between">
+        <div className="w-[633px] min-h-[250px] p-10 bg-orange-50 rounded-[20px] flex flex-col justify-between gap-4">
           {isComplete === ECompleteStage.complete && (
             <audio controls>
               <source src={`/audio/output.mp3`} type="audio/mpeg" />
@@ -285,7 +282,7 @@ export default function Home() {
           )}
           {isComplete === ECompleteStage.complete &&
           text.translatedText !== "" ? (
-            <p className="text-center">{text.translatedText}</p>
+            <p className="">{text.translatedText}</p>
           ) : (
             <div />
           )}
@@ -294,7 +291,7 @@ export default function Home() {
               className={`self-end opacity-50 cursor-default ${
                 isComplete === ECompleteStage.complete &&
                 text.inputText !== "" &&
-                "opacity-100 hover:cursor-pointer"
+                "opacity-100 hover:cursor-pointer "
               }`}
               onClick={handleDownload}
             >
@@ -304,7 +301,7 @@ export default function Home() {
               className={`self-end opacity-50 cursor-default ${
                 isComplete === ECompleteStage.complete &&
                 text.inputText !== "" &&
-                "opacity-100 hover:cursor-pointer"
+                "opacity-100 hover:cursor-pointer hover:animate-bounce"
               }`}
               onClick={() => copy(text.translatedText)}
             >
@@ -325,7 +322,7 @@ export default function Home() {
       </div>
 
       {/*footer*/}
-      <div className="w-auto h-[535px] bg-orange-400 bg-opacity-60 mt-40 pt-[88px]">
+      <div className="w-auto h-[535px] bg-orange-400 bg-opacity-60 mt-24 pt-[88px]">
         <div className="ml-[174px]">
           <div className="flex">
             <Image src={Upload} alt="upload"></Image>
@@ -333,10 +330,7 @@ export default function Home() {
               <p className="text-[32px] font-bold font-['Sofia Sans']">
                 File Upload
               </p>
-              <p>
-                Uploaded files must be in .mp3 format and must not exceed 30
-                seconds in length
-              </p>
+              <p>Uploaded files must be in .mp3 format.</p>
             </div>
           </div>
           <div className="mt-[85px] flex">
