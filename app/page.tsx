@@ -10,8 +10,6 @@ import dowload from "../app/pic/download.png";
 import up from "../app/pic/up.png";
 import dow from "../app/pic/dow.png";
 import PopUp1 from "../components/popUp1";
-// import PopUp2 from "../components/popUp2";
-// import PopUp3 from "../components/popUp3";
 import React, { useState, useRef } from "react";
 
 interface IText {
@@ -33,7 +31,6 @@ enum ECompleteStage {
 export default function Home() {
   const [currentLanguage, setCurrentLanguage] = useState("th-TH"); // Default language
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [isComplete, setIsComplete] = useState<ECompleteStage>(
     ECompleteStage.wait
   );
@@ -56,10 +53,6 @@ export default function Home() {
   };
 
   const handleFileUpload = async () => {
-    if (hiddenFileInput.current) {
-      hiddenFileInput.current.click();
-    }
-
     if (selectedFile) {
       // upload file
       try {
@@ -330,7 +323,10 @@ export default function Home() {
               <p className="text-[32px] font-bold font-['Sofia Sans']">
                 File Upload
               </p>
-              <p>Uploaded files must be in .mp3 format.</p>
+              <p>
+                Uploaded files must be in .mp3 format and must not exceed 60
+                seconds in length
+              </p>
             </div>
           </div>
           <div className="mt-[85px] flex">
